@@ -3,19 +3,21 @@ const handleFileReaderLoad = async (event) => {
   const typedArray = new Uint8Array(event.target.result);
   try {
     const pdf = await pdfjsLib.getDocument(typedArray).promise;
-    processPDF(pdf);
+    const pageNumberInput = document.getElementById("pageNumberInput");
+    const startPage = parseInt(pageNumberInput.value, 10) || 1;
+    processPDF(pdf, startPage);
   } catch (error) {
     console.error("Error loading PDF:", error);
   }
 };
 
 // Function to process the loaded PDF
-const processPDF = async (pdf) => {
+const processPDF = async (pdf, startPage) => {
   const numPages = pdf.numPages;
   let pTags = "";
 
   // Iterate through each page
-  for (let i = 1; i <= numPages; i++) {
+  for (let i = startPage; i <= numPages; i++) {
     try {
       const page = await pdf.getPage(i);
       const textContent = await page.getTextContent();
@@ -30,7 +32,7 @@ const processPDF = async (pdf) => {
       });
 
       // Update loading bar progress
-      const progress = (i / numPages) * 100;
+      const progress = ((i - startPage + 1) / (numPages - startPage + 1)) * 100;
       updateLoadingBar(progress);
     } catch (error) {
       console.error("Error processing page:", error);
