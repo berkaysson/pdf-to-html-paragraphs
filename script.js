@@ -57,6 +57,19 @@ const loadPdf = (event) => {
 // Event listener for file input change
 document.getElementById("fileInput").addEventListener("change", loadPdf);
 
+document.addEventListener("DOMContentLoaded", () => {
+  const lastPageNumber = localStorage.getItem("lastPageNumber");
+  if (lastPageNumber) {
+    const pageNumberInput = document.getElementById("pageNumberInput");
+    pageNumberInput.value = lastPageNumber;
+  }
+});
+
+document.getElementById("pageNumberInput").addEventListener("change", (event) => {
+  const pageNumber = event.target.value;
+  localStorage.setItem("lastPageNumber", pageNumber);
+});
+
 const updateLoadingBar = (progress) => {
   const loadingBar = document.getElementById("loadingBar");
   loadingBar.value = progress;
