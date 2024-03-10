@@ -77,11 +77,8 @@ const updateLoadingBar = (progress) => {
 
 // Function to handle reset button click event
 const resetPdf = () => {
-  // Clear the file input
   document.getElementById("output").innerHTML = '<p>Başlangıç</p>';
-  // Clear the loaded content
-  document.getElementById("output").innerHTML = "";
-  // Clear the loading bar
+  document.getElementById("fileInput").value = null;
   updateLoadingBar(0);
 };
 
